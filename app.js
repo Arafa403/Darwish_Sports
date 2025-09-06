@@ -45,7 +45,8 @@ app.get("/contact", (req, res) => {
 
 // تشغيل السيرفر
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log("🚀 Server running on port", PORT);
+  ;
 });
 
 module.exports = app;
