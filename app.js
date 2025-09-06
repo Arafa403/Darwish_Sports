@@ -28,10 +28,26 @@ app.set("views", path.join(__dirname, "views"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
-// بيانات تجريبية
+// بيانات تجريبية (ممكن تتخزن في MongoDB بعدين)
 const shoppingItems = [
-  { name: "نجيلة طبيعية", price: 100, quantity: 1 },
-  { name: "نجيلة صناعية", price: 80, quantity: 1 },
+  {
+    id: 1,
+    productName: "نجيلة طبيعية",
+    price: 100,
+    quantity: 1,
+    images: ["https://via.placeholder.com/400x200?text=نجيلة+طبيعية"],
+    descriptions: ["نجيلة عالية الجودة ومناسبة للحدائق"],
+    videoPath: "",
+  },
+  {
+    id: 2,
+    productName: "نجيلة صناعية",
+    price: 80,
+    quantity: 1,
+    images: ["https://via.placeholder.com/400x200?text=نجيلة+صناعية"],
+    descriptions: ["نجيلة صناعية عملية وسهلة التركيب"],
+    videoPath: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+  },
 ];
 
 // Routes
@@ -40,7 +56,18 @@ app.get("/", (req, res) => {
 });
 
 app.get("/products", (req, res) => {
-  res.render("products");
+  res.render("products", { arr: shoppingItems });
+});
+
+app.get("/product/:id", (req, res) => {
+  const productId = parseInt(req.params.id);
+  const product = shoppingItems.find((item) => item.id === productId);
+
+  if (!product) {
+    return res.status(404).send("❌ المنتج غير موجود");
+  }
+
+  res.render("product", { obj: product });
 });
 
 app.get("/contact", (req, res) => {
